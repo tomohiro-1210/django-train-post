@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 # 認証関係のモジュール読み込み(Django標準搭載)
 from django.contrib.auth.models import User
@@ -79,3 +79,13 @@ def listfunc(request):
    
    data = {'object_list':object_list}
    return render(request ,template, data)
+
+# 投稿詳細
+@login_required
+def detailfunc(request, pk):
+   template = 'detail.html'
+   # 個別のデータを読み込む
+   object = get_object_or_404(ListModel, pk=pk)
+   
+   data = {'object':object}
+   return render(request, template, data)
