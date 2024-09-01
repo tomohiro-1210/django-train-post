@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.urls import reverse_lazy
 # 認証関係のモジュール読み込み(Django標準搭載)
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -7,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 # 自作物の読み込み
 from .models import ListModel
+
+from django.views.generic import CreateView
 
 # Errorの読み込み
 from django.db import IntegrityError
@@ -110,4 +113,12 @@ def readfunc(request, pk):
       object.readuser = object.readuser + ', ' + username
       object.save()
       return redirect('list')
+   
+# 投稿
+class UserCreate(CreateView):
+   template_name = 'create.html'
+   model = ListModel
+   fields = ('title' ,'content', 'post_user', 'thumbnail')
+   success_url = reverse_lazy('list')
+   
       

@@ -1,6 +1,6 @@
 from django.urls import path
 from django.shortcuts import render,redirect
-from .views import index, signupfunc, loginfunc, dashboard, listfunc, logoutfunc, detailfunc, goodfunc, readfunc
+from .views import *
 # ファイル読み込み関連のモジュール
 from django.conf import settings
 from django.conf.urls.static import static
@@ -13,6 +13,9 @@ urlpatterns = [
     path('logout/', logoutfunc, name="logout"),
     path('list/', listfunc, name='list'),
     path('detail/<int:pk>/', detailfunc, name='detail'),
+    path('create/', UserCreate.as_view(), name="create"),
+    
+    # ページなし
     path('good/<int:pk>/', goodfunc, name='good'),
     path('read/<int:pk>/', readfunc, name="read"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
