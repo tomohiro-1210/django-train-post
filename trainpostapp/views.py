@@ -31,6 +31,7 @@ def signupfunc(request):
       try:
          # Userモデルにデータを登録する
          user = User.objects.create_user(username, email, password)
+         return redirect('login')
       except IntegrityError:
          error = "入力された名前・メールアドレスは既に使われております。"
          data = {'error': error}
@@ -89,3 +90,24 @@ def detailfunc(request, pk):
    
    data = {'object':object}
    return render(request, template, data)
+
+# いいね
+def goodfunc(request, pk):
+   
+   object = ListModel.objects.get(pk=pk)
+   object.good = object.good + 1
+   object.save()
+   return redirect('list')
+
+# 既読
+def readfunc(request, pk):
+   object = ListModel.objects.get(pk=pk)
+   username = request.user.get_username()
+   if username in object.readuser:
+      return redirect('list')
+   else:
+      object.read = object.read + 1
+      object.readuser = object.readuser + ', ' + username
+      object.save()
+      return redirect('list')
+      
